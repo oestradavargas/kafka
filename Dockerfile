@@ -1,20 +1,23 @@
-# Usa la imagen oficial de Python
+# Utilizar la imagen base de Python
 FROM python:3.9-slim
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar el archivo requirements.txt y el código de la API
+# Copiar el archivo de requisitos
 COPY requirements.txt .
 
-# Instalar las dependencias del proyecto
+# Instalar las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto de los archivos de la aplicación
+# Copiar el resto de la aplicación al contenedor
 COPY . .
 
-# Exponer el puerto donde correrá FastAPI (por defecto, 8000)
+# Copiar los modelos al contenedor
+COPY model/ ./model/
+
+# Exponer el puerto en el que correrá FastAPI
 EXPOSE 8000
 
-# Comando para correr la aplicación en modo reload
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Comando para ejecutar la aplicación FastAPI
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
